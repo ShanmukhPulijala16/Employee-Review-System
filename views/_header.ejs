@@ -1,0 +1,71 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid" style="margin: auto">
+    <a class="navbar-brand" href="/"
+      ><h3 class="my-auto">
+        <img
+          class="my-auto"
+          src="/images/ERS_LOGO.png"
+          alt="ERS_LOGO"
+          style="height: 36px; width: 36px"
+        />
+        Employee Review System
+      </h3></a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <% if(locals.user){ %>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item" style="width: max-content">
+        <a class="nav-link active" aria-current="page" href="/"
+          ><span><i class="fa-solid fa-house"></i> Home</span></a
+        >
+      </li>
+      <% if(locals.user.role === 'admin'){ %>
+      <li class="nav-item" style="width: max-content">
+        <a class="nav-link" href="/add-employee"
+          ><i class="fa-solid fa-user-plus"></i> Add Employee</a
+        >
+      </li>
+      <% } %>
+      <li class="nav-item dropdown" style="width: max-content">
+        <form action="/sign-out" method="post">
+          <a
+            class="nav-link dropdown-toggle"
+            role="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <%= locals.user.username %>
+          </a>
+
+          <ul
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuLink"
+            style="width: max-content"
+          >
+            <li>
+              <button class="dropdown-item" type="submit">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+              </button>
+            </li>
+          </ul>
+        </form>
+      </li>
+    </ul>
+    <% } %>
+  </div>
+</nav>
+

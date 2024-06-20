@@ -1,0 +1,129 @@
+<% if(locals.user && locals.user.role === 'admin'){ %>
+
+<!-- USERS  -->
+<% if(filteredUsers && filteredUsers.length>0){ %>
+
+<h2 class="my-3" style="text-align: center">All Employees and Admins</h2>
+<div class="d-flex justify-content-around flex-wrap" style="margin: 2rem">
+  <% for(let user of filteredUsers){ %>
+  <!-- Card -->
+  <div
+    class="card"
+    style="width: 28rem; margin: 1rem; background-color: antiquewhite; overflow: hidden;"
+  >
+    <div class="d-flex flex-row align-items-center">
+      <img
+        style="height: 70px; width: 70px; margin: 10px"
+        src="/images/<%= user.gender %>.png"
+        class="card-img-top"
+        alt="<%= user.gender %>"
+      />
+      <div style="margin: 10px;">
+        <h5 class="card-title"><%= user.username %></h5>
+        <p class="card-text my-0"><%= user.email %></p>
+        <p class="card-text my-0">Gender: <%= user.gender %></p>
+        <p class="card-text my-0">Role: <%= user.role %></p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- Buttons -->
+      <div class="d-flex justify-content-around">
+        <a
+          href="/destroy/<%= user._id %>"
+          class="btn btn-outline-danger"
+          style="width: 40%; margin: 10px 0px"
+          ><i class="fa-solid fa-trash"></i> Delete</a
+        >
+        <a
+          href="/edit-employee/<%= user._id %>"
+          class="btn btn-outline-primary"
+          style="width: 40%; margin: 10px 0px"
+          ><i class="fa-solid fa-pen-to-square"></i> Edit</a
+        >
+      </div>
+
+      <!-- Modal for assigning review - START -->
+      <% if(user.role === "employee"){ %>
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop<%= user._id %>"
+        style="width: 100%;"
+      >
+        <i class="fa-solid fa-file"></i> Assign Review
+      </button>
+      <% } %>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="staticBackdrop<%= user._id %>"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1
+                class="modal-title fs-5"
+                id="staticBackdropLabel<%= user._id %>"
+              >
+                Assign review
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form action="review/assign-review/<%= user._id %>" method="POST">
+                <div class="mb-3">
+                  <h6>Reviewer: <%= user.username %></h6>
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-name">Recipient: </label>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    name="recipient_email"
+                  >
+                    <% for(recipient of filteredUsers){ %> <% if(recipient.email
+                    !== user.email && recipient.role != "admin"){ %>
+                    <option value="<%= recipient.email %>">
+                      <%= recipient.email %>
+                    </option>
+                    <% } %> <% } %>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary">Assign</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for assigning review - END -->
+    </div>
+  </div>
+
+  <% } %>
+</div>
+
+<% } %> <% } %>

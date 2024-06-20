@@ -1,0 +1,100 @@
+<% if(locals.user){ %>
+
+<!-- START -->
+
+<div class="container-fluid">
+  <div class="row mt-4">
+    <!-- Assigned reviews -->
+    <div class="col-md-6 col-lg-6 col-sm-12 my-2">
+      <h2 class="text-center">Assigned Reviews</h2>
+      <div class="d-flex justify-content-center align-items-center">
+        <div
+          class="d-flex flex-wrap justify-content-center ms-lg-4"
+          style="width: 100%"
+        >
+          <% if(assignedReviews.length==0) {%>
+          <div class="alert alert-danger mt-5" role="alert">
+            No Reviews assigned by the Admin!
+          </div>
+          <% } %> <% for(let review of assignedReviews) {%>
+          <div
+            class="col-8 col-lg-5 p-2 m-3 rounded shadow"
+            style="background: #fff2e4"
+          >
+            <form
+              action="/review/create/<%=employee._id%>"
+              class="d-flex flex-column justify-content-center"
+              method="POST"
+              style="padding: 10px"
+            >
+              <div class="mb-3">
+                <label for="recipient " class="fw-semibold">Recipient: </label>
+                <input
+                  type="email"
+                  class="form-control mt-2"
+                  id="recipient"
+                  value="<%= review.email %>"
+                  name="email"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="feedback-form" class="form-label fw-semibold"
+                  >Feedback:</label
+                >
+                <textarea
+                  class="form-control"
+                  id="feedback-form"
+                  name="feedback"
+                  rows="3"
+                ></textarea>
+              </div>
+              <button
+                class="btn btn-success align-self-center"
+                style="width: 40%"
+                type="submit"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
+          <%} %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feedbacks given by others -->
+    <div class="col-md-6 col-lg-6 col-sm-12 my-2">
+      <h2 class="text-center">Feedbacks by others</h2>
+
+      <div
+        class="d-flex flex-column justify-content-center align-items-center mt-4"
+      >
+        <% if(reviewsFromOthers.length==0) {%>
+        <div class="alert alert-danger mt-4" role="alert">
+          Yet to recieve a feeback!
+        </div>
+        <% } %> <% for (review of reviewsFromOthers) {%>
+        <div class="alert alert-primary" style="width: 80%">
+          <dl>
+            <dt class="fw-semibold">
+              Reviewer:
+              <span class="fw-normal">
+                <%= review.reviewer.email %>(<%= review.reviewer.username %>)
+              </span>
+            </dt>
+            <dt class="fw-semibold">
+              Feedback:
+              <span class="fw-normal"> <%= review.review %> </span>
+            </dt>
+          </dl>
+        </div>
+        <%} %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- END -->
+
+<% } %>
