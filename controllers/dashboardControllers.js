@@ -11,8 +11,8 @@ const dashboardsControllers = {
                 let filteredUsers = users.filter(
                     (user) => user.email !== req.user.email
                 );
-                console.log("filteredUsers: ", filteredUsers);
-                return res.render('admin-dashboard', { filteredUsers: filteredUsers });
+                // console.log("filteredUsers: ", filteredUsers);
+                return res.render('admin-dashboard', { title: "Admin Dashboard", filteredUsers: filteredUsers });
             } else {
                 return res.redirect('/');
             }
@@ -40,6 +40,7 @@ const dashboardsControllers = {
                 }
                 console.log("reviewsFromOthers: ", reviewsFromOthers);
                 return res.render('employee-dashboard', {
+                    title: "Employee Dashboard",
                     employee,
                     assignedReviews,
                     reviewsFromOthers

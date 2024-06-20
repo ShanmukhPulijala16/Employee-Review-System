@@ -1,3 +1,4 @@
+const path = require('path');
 const reviewModel = require('../models/Review');
 const userModel = require('../models/User');
 
@@ -36,17 +37,30 @@ const usersControllers = {
     // Render edit employee page
     editEmployee: async (req, res) => {
         try {
+            // if (req.isAuthenticated() && req.user.role === 'admin') {
+            //     const employee = await userModel.findById(req.params.id);
+            //     const reviewsFromOthersArray = employee.reviewsFromOthers;
+            //     let reviewsFromOthers = [];
+            //     for (let id of reviewsFromOthersArray) {
+            //         const review = await reviewModel.findById(id).populate('reviewer').exec();
+            //         reviewsFromOthers.push(review);
+            //     }
+            //     return res.render('edit-employee', { title: 'Edit employee', employee, reviewsFromOthers });
+            // }
+            // return res.redirect('/');
             if (req.isAuthenticated() && req.user.role === 'admin') {
-                const employee = await userModel.findById(req.params.id);
-                const reviewsFromOthersArray = employee.reviewsFromOthers;
-                let reviewsFromOthers = [];
-                for (let id of reviewsFromOthersArray) {
-                    const review = await reviewModel.findById(id).populate('reviewer').exec();
-                    reviewsFromOthers.push(review);
-                }
-                return res.render('edit-employee', { title: 'Edit employee', employee, reviewsFromOthers });
+                const employee = await userModel.findById(req.params.id).populate({
+                    path: "reviewsFromOthers",
+                    model: "Review",
+                    populate: ({
+                        path: "reviewer",
+                        model: "User"
+                    })
+                });
+                const reviewsFromOthers = employee.reviewsFromOthers;
+                return res.render('edit-employee', { title: 'Edit Employee', employee, reviewsFromOthers });
             }
-            return res.redirect('/');
+            return res.redirect('/')
         } catch (err) {
             console.log(err);
             return res.redirect('back');
