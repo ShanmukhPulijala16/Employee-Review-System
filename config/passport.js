@@ -13,12 +13,12 @@ passport.use(
                 const user = await userModel.findOne({ email });
                 if (!user) {
                     req.flash('error', "User not found for given email");
-                    return done(null, false, { message: "User not found for given email" });
+                    return done(null, false);
                 }
                 const isPasswordCorrect = await user.isValidatedPassword(password);
                 if (!isPasswordCorrect) {
                     req.flash('error', "Incorrect password!");
-                    return done(null, false, { message: "Incorrect password!" });
+                    return done(null, false);
                 }
 
                 // Password is correct
