@@ -25,25 +25,34 @@ const dashboardsControllers = {
     employeeDashboard: async (req, res) => {
         try {
             if (req.isAuthenticated()) {
-                const employee = await userModel.findById(req.params.id);
-                const assignedReviewsArray = employee.assignedReviews;
-                let assignedReviews = [];
-                for (let id of assignedReviewsArray) {
-                    let review = await userModel.findById(id);
-                    assignedReviews.push(review);
-                }
-                const reviewsFromOthersArray = employee.reviewsFromOthers;
-                let reviewsFromOthers = [];
-                for (let id of reviewsFromOthersArray) {
-                    let review = await reviewModel.findById(id).populate('reviewer').exec();
-                    reviewsFromOthers.push(review);
-                }
-                console.log("reviewsFromOthers: ", reviewsFromOthers);
+                // populate the employee with reviews assigned to it and reviews from others
+                const employee = await userModel.findById(req.params.id)
+                    .populate({
+                        path: 'reviewsFromOthers',
+                        populate: {
+                            path: 'reviewer',
+                            model: 'User',
+                        },
+                    })
+                    .populate('assignedReviews');
+
+                // extract the reviews assigned to it
+                const assignedReviews = employee.assignedReviews;
+
+                // extract feedbacks from other employees
+                const reviewsFromOthers = employee.reviewsFromOthers;
+
+                // populate reviews given from others
+                const populatedResult = await reviewModel.find().populate({
+                    path: 'reviewer',
+                    model: 'User',
+                });
+
                 return res.render('employee-dashboard', {
-                    title: "Employee Dashboard",
+                    title: 'Employee Dashboard',
                     employee,
                     assignedReviews,
-                    reviewsFromOthers
+                    reviewsFromOthers,
                 });
             } else {
                 return res.redirect('/');
