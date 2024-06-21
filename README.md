@@ -1,3 +1,3 @@
 # In order to login
 
-You can just make register and login
+You can just register directly and login
