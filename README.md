@@ -6,4 +6,6 @@ You can just register directly and login
 
 GitHub Link - https://github.com/ShanmukhPulijala16/Employee-Review-System
 
+Video Link - https://youtu.be/4GjcWdDSFHM
+
 Hosted Link - http://emprevsys.shanmukhdev.online/
