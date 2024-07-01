@@ -17,8 +17,7 @@ To install all the dependences of the project, run the following command:
 ```sh
 git clone https://github.com/ShanmukhPulijala16/Employee-Review-System
 npm install
-npm start```
-
+npm start
 
 # In order to login
 
