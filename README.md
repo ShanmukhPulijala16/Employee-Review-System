@@ -14,9 +14,9 @@ Authentication: Unified login for admin and employees with role-based access.
 
 To install all the dependences of the project, run the following command:
 
-git clone https://github.com/shakti1590/employee-review-sys.git
+```git clone https://github.com/ShanmukhPulijala16/Employee-Review-System
 npm install
-npm start
+npm start```
 
 
 # In order to login
